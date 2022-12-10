@@ -1,9 +1,9 @@
-import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+// import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import '../../styles.css';
 
-{/* <ul class="gallery">
-  <!-- Набір <li> із зображеннями -->
-</ul> */}
+// {/* <ul class="gallery">
+//   <!-- Набір <li> із зображеннями -->
+// </ul> */}
 
 export default function ImageGallery({ gallery: { hits } }) {
   return (
