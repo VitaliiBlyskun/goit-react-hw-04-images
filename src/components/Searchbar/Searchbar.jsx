@@ -7,18 +7,18 @@ import '../../styles.css'
 
 export default class Searchbar extends Component {
   state = {
-    areaName: '',
+    query: '',
   };
 
   handleNameChange = event => {
-    this.setState({ areaName: event.currentTarget.value.toLowerCase() });
+    this.setState({ query: event.currentTarget.value.toLowerCase() });
   };
 
   handleSubmit = event => {
     event.preventDefault();
 
-    if(this.state.areaName.trim() === '') {        
-        return toast.error('input something', {
+    if(this.state.query.trim() === '') {        
+        return toast.error('Input picture name', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -31,8 +31,8 @@ export default class Searchbar extends Component {
       
     }
 
-    this.props.onSubmit(this.state.areaName);
-    this.setState({ areaName: '' });
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
   };
 
   render() {
@@ -52,7 +52,7 @@ export default class Searchbar extends Component {
 
             name="query"
 
-            value={this.state.areaName}
+            value={this.state.query}
             onChange={this.handleNameChange}
           />
         </form>

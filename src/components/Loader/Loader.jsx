@@ -19,13 +19,3 @@ export default function Loader({ galleryName }) {
   );
 }
 
-// <Grid
-//   height="80"
-//   width="80"
-//   color="#223ad6"
-//   ariaLabel="grid-loading"
-//   radius="12.5"
-//   wrapperStyle={{}}
-//   wrapperClass=""
-//   visible={true}
-// />

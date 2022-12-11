@@ -1,55 +1,61 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../styles.css';
-import FetchInfo from './FetchInfo';
+import Button from './Button/Button';
+import Loader from './Loader/Loader';
+import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
+import fetchApi from './services/api';
+import '../styles.css';
 
 export class App extends Component {
-  // state = {
-  //   galleryName: '',
-  // };
-
-    // handleFormSubmit = galleryName => {
-  //   this.setState({ galleryName: galleryName});
-  // };
-
   state = {
-    galleryName: '',
+    gallery: '',
     page: 1,
     items: [],
+
+    error: null,
+    status: 'idle',
   };
 
   loadMore = () => {
     this.setState(prevState => ({
-      page: prevState.page + 1
-    }))
-  }
-  
-
-  handleFormSubmit = galleryName => {
-    this.setState({
-      page: 1,
-      galleryName: galleryName,
-      items: [],
-    })
+      page: prevState.page + 1,
+    }));
   };
 
-  componentDidUpdate(_, prevState) {
-    // console.log("prevState.page: ", prevState.page);
-    // console.log("this.state.page: ", this.state.page);
+  handleFormSubmit = gallery => {
+    this.setState({
+      gallery,
+      page: 1,
+      items: [],
+    });
+  };
 
-    // console.log("prevState.galleryName: ", prevState.galleryName);
-    // console.log("this.state.galleryName: ", this.state.galleryName);
-    
-    if(prevState.page !== this.state.page || prevState.galleryName !== this.state.galleryName) {
-      console.log("Fetch data");
+  componentDidUpdate = (_, prevState) => {
+    const prevName = prevState.gallery;
+    const nextName = this.state.gallery;
+    if (prevName !== nextName) {
+      console.log('prevName:', prevName);
+      console.log('nextName:', nextName);
+      console.log('Змінили імя галереї');
+
+      // fetchApi(nextName).then(console.log);
+
+      this.setState({ gallery: '',  status: 'pending' });
+      fetchApi(nextName)
+        .then(gallery =>
+          this.setState({ gallery, status: 'resolved' })
+        )
+        .catch(error => this.setState({ error, status: 'rejected' }))
     }
-  }
+  };
 
   render() {
+    const { gallery, error, status } = this.state;
     return (
-      <div>
+      <>
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -63,81 +69,111 @@ export class App extends Component {
           theme="dark"
         />
         <Searchbar onSubmit={this.handleFormSubmit} />
+        {status === 'idle' && <div>Enter a picture name</div>}
+        {status === 'pending' && <Loader />}
+        {status === 'rejected' && <h1>{error.message}</h1>}
+        {status === 'resolved' && <ImageGallery gallery={gallery} />}
 
-        <FetchInfo galleryName={this.state.galleryName} />
-        <button onClick={this.loadMore} className="Button">Load more</button>
+        <Button onClick={this.loadMore} />
         <ToastContainer />
-      </div>
+      </>
     );
   }
 }
 
-////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 // import { Component } from 'react';
 // import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import '../styles.css';
+// import Button from './Button/Button';
 // import Searchbar from './Searchbar/Searchbar';
+// import FethInfo from './services/fetchInfo';
 
 // export class App extends Component {
+//   // state = {
+//   //   galleryName: '',
+//   // };
+
+//   // handleFormSubmit = galleryName => {
+//   //   this.setState({ galleryName: galleryName});
+//   // };
+
 //   state = {
 //     galleryName: '',
-//     gallery: null,
+//     page: 1,
+//     items: [],
+//     ///////////////////////////////////////////////////////
+//     // per_page: 12,
+//     // total: null,
+//     ///////////////////////////////////////////////////////
 //   };
 
-//   // componentDidMount() {
-//   //   fetch(`https://pixabay.com/api/?q=cat&page=1&key=30520584-c0fa81cb9ba3feeaa4712e503&image_type=photo&orientation=horizontal&per_page=12`)
-//   //   .then(result => result.json())
-//   //   .then(gallery => this.setState( {gallery: gallery} ))
-//   // }
-
-//   componentDidMount() {
-//     fetch(`https://pixabay.com/api/?q=cat&page=1&key=30520584-c0fa81cb9ba3feeaa4712e503&image_type=photo&orientation=horizontal&per_page=12`)
-//     .then(result => result.json())
-//     .then(gallery => this.setState( {gallery: gallery} ))
-//   }
+//   loadMore = () => {
+//     this.setState(prevState => ({
+//       page: prevState.page + 1,
+//     }));
+//   };
 
 //   handleFormSubmit = galleryName => {
-//     this.setState({ galleryName });
-//     // console.log(galleryName);
+//     this.setState({
+//       galleryName: galleryName,
+//       page: 1,
+//       items: [],
+//     });
 //   };
 
-//   componentDidUpdate(prevProps, prevState) {
-//     if(prevProps.galleryName !== this.state.galleryName) {
-//       // console.log("change galleryName")
-//       // console.log("prevProps.galleryName", prevProps.galleryName)
-//       // console.log("this.state.galleryName", this.state.galleryName)
+//   componentDidUpdate(_, prevState) {
+//     // console.log("prevState.page: ", prevState.page);
+//     // console.log("this.state.page: ", this.state.page);
 
-//       fetch( `https://pixabay.com/api/?q=${this.state.galleryName}&page=1&key=30520584-c0fa81cb9ba3feeaa4712e503&image_type=photo&orientation=horizontal&per_page=12`)
-//       .then(res => res.json())
-//       .then(gallery => this.setState({ gallery: gallery}))
+//     // console.log("prevState.galleryName: ", prevState.galleryName);
+//     // console.log("this.state.galleryName: ", this.state.galleryName);
+
+//     const { galleryName, page, items, total } = this.state;
+
+//     if (prevState.page !== page || prevState.galleryName !== galleryName) {
+//       console.log('Fetch data');
+
+//       //////////////////////////////////////////////////////
+//       // this.setState(prevState => ({
+//       //   items: [...prevState.items, ...items],
+//       //   per_page: 12,
+//       //   total,
+//       // }));
+//       //////////////////////////////////////////////////////////
 //     }
 //   }
 
 //   render() {
+//     ////////////////////////////////////////////////////////////
+//     // const { galleryName, page, items, per_page, total } = this.state;
+//     // const pageNumber = Math.ceil(total / per_page);
+
+//     /////////////////////////////////////////////////////////////
+
 //     return (
 //       <div>
-// <ToastContainer
-//   position="top-right"
-//   autoClose={5000}
-//   hideProgressBar={false}
-//   newestOnTop={false}
-//   closeOnClick
-//   rtl={false}
-//   pauseOnFocusLoss
-//   draggable
-//   pauseOnHover
-//   theme="dark"
-// />
-// <ToastContainer />
+//         <ToastContainer
+//           position="top-right"
+//           autoClose={5000}
+//           hideProgressBar={false}
+//           newestOnTop={false}
+//           closeOnClick
+//           rtl={false}
+//           pauseOnFocusLoss
+//           draggable
+//           pauseOnHover
+//           theme="dark"
+//         />
 //         <Searchbar onSubmit={this.handleFormSubmit} />
 
-//         <div>
-//           <h1>Gallery</h1>
-//           {!this.state.galleryName && <div>Уведіть дашо</div>}
-//         </div>
+//         <FethInfo galleryName={this.state.galleryName} />
 
-//         {/* {this.state.gallery && <div>{this.state.gallery.hits[1].id}</div>} */}
+//         <Button onClick={this.loadMore}/>
+//         <ToastContainer />
 //       </div>
 //     );
 //   }
-// };
+// }
