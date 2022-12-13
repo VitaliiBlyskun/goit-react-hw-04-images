@@ -31,19 +31,6 @@ export default class Searchbar extends Component {
             });  
     }
 
-  //   if(this.state.query.trim() !== event.currentTarget.value) {        
-  //     return toast.error('Sorry, but we have no pictures for you.', {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "dark",
-  //         });  
-  // }
-
     this.props.onSubmit(this.state.query);
     this.setState({ query: '' });
   };
