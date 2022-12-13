@@ -46,7 +46,7 @@ export default class ImageGalleryItem extends Component {
           style={modalStyles}
         >
           <button onClick={this.toggleModal}>Close</button>
-          <img src={largeImageURL} alt="big picture" />
+          <img src={largeImageURL} alt={tags} />
         </Modal>
       </>
     );
