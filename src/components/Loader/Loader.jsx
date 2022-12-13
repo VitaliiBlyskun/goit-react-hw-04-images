@@ -1,7 +1,7 @@
 import { Grid } from 'react-loader-spinner';
 import '../../styles.css';
 
-export default function Loader({ galleryName }) {
+export default function Loader() {
   return (
     <div className="Loader-style">
         <Grid

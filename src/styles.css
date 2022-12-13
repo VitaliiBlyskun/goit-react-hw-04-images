@@ -207,6 +207,11 @@ img {
   background-color: #303f9f;
 }
 
+.ButtonArea {
+  display: flex;
+  justify-content: center;
+}
+
 /* 
  *Стилі компонента Спінер (Лоадер) 
 */

@@ -1,5 +1,5 @@
 import '../../styles.css';
-// import * as basicLightbox from 'basiclightbox';
+import PropTypes from 'prop-types'
 
 export default function Modal ({
   hits: { largeImageURL, tags },
@@ -11,5 +11,12 @@ export default function Modal ({
       </div>
     </div>
   );
+}
+
+Modal.propTypes = {
+  hits: PropTypes.shape({
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  })
 }
 

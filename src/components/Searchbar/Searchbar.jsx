@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../styles.css'
@@ -18,7 +19,7 @@ export default class Searchbar extends Component {
     event.preventDefault();
 
     if(this.state.query.trim() === '') {        
-        return toast.error('Input picture name', {
+        return toast.warning('Input picture name', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -27,9 +28,21 @@ export default class Searchbar extends Component {
             draggable: true,
             progress: undefined,
             theme: "dark",
-            });
-      
+            });  
     }
+
+  //   if(this.state.query.trim() !== event.currentTarget.value) {        
+  //     return toast.error('Sorry, but we have no pictures for you.', {
+  //         position: "top-right",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "dark",
+  //         });  
+  // }
 
     this.props.onSubmit(this.state.query);
     this.setState({ query: '' });
@@ -49,9 +62,7 @@ export default class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-
             name="query"
-
             value={this.state.query}
             onChange={this.handleNameChange}
           />
@@ -61,3 +72,6 @@ export default class Searchbar extends Component {
   }
 }
 
+Searchbar.propTypes = {
+  query: PropTypes.string,
+}

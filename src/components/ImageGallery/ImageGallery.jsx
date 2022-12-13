@@ -1,9 +1,10 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import PropTypes from 'prop-types'
 import '../../styles.css';
 
 
 
-export default function ImageGallery({ gallery: { hits } }) {
+export default function ImageGallery({ hits }) {
   return (
     <ul className="ImageGallery">
       {hits.map(hit => (
@@ -14,5 +15,7 @@ export default function ImageGallery({ gallery: { hits } }) {
 }
 
 
-
+ImageGallery.propTypes = {
+    hits: PropTypes.array,
+}
 
