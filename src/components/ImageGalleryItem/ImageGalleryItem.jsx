@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types'
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import '../../index.css';
 
 import Modal from 'react-modal';
@@ -17,44 +17,42 @@ const modalStyles = {
 
 Modal.setAppElement('#root');
 
+const ImageGalleryItem = ( {hits} ) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-export default class ImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
-  }
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
-  toggleModal = () => {
-    this.setState((prevState) => ({isModalOpen: !prevState.isModalOpen}))
-  }
+  const { id, webformatURL, largeImageURL, tags } = hits
 
-  render () {
-    const {isModalOpen } = this.state;
-    const {
-      hits: {id, webformatURL, largeImageURL, tags }
-    } = this.props;
+  return (
+    <>
+      <li key={id} className="gallery-item">
+        <img
+          src={webformatURL}
+          className="ImageGalleryItem-image"
+          alt={tags}
+          onClick={toggleModal}
+        />
+      </li>
 
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={toggleModal}
+        style={modalStyles}
+      >
+        <button onClick={toggleModal}>Close</button>
+        <img src={largeImageURL} alt={tags} />
+      </Modal>
+    </>
+  );
+};
 
-    return (
-      <>
-        <li key={id} className="gallery-item">
-          <img src={webformatURL} className="ImageGalleryItem-image" alt={tags} onClick={this.toggleModal} />
-        </li>
-  
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={this.toggleModal}
-          style={modalStyles}
-        >
-          <button onClick={this.toggleModal}>Close</button>
-          <img src={largeImageURL} alt={tags} />
-        </Modal>
-      </>
-    );
-  }
-}
-
+export default ImageGalleryItem;
 
 ImageGalleryItem.propTypes = {
   id: PropTypes.number,
   tags: PropTypes.string.isRequired,
-}
+};
+
